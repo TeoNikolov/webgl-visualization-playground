@@ -1,0 +1,105 @@
+<!DOCTYPE HTML> 
+<html ng-app> 
+	<head> 
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>	
+		<script type="text/javascript" src="src/controls.js"></script>
+	
+		<link rel="stylesheet" type="text/css" href="game.css">
+		<meta charset="utf-8"> 
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>WebGL Game</title>
+	</head> 
+	<body>
+		<div id="container">
+			<canvas id="c" width="1920" height="1080"></canvas>
+					
+			<div ng-controller="OverlayCtrl" id="overlay-grid-container">
+				<!-- toggle overlay -->
+				<div class="overlay" id="toggle-overlay">
+					<input onclick="toggleOverlay()" id="toggle" type="button" value="HIDE">
+				</div>
+				
+				<!-- FPS overlay -->
+				<div class="overlay" id="fps-overlay">
+				</div>
+				
+				<!-- controls overlay -->
+				<div class="overlay" id="control-overlay">
+					
+					<div class="control-block">
+						<div class="horizontal-flex-container">
+							<div class="button-range-container" id="horizontal-grid-resolution-control-block">
+								<input type="button" value="<" onclick="stepMozaicResolution(this, 0, -1)">
+								<input class="indicator-textbox" type="number" value="test" onchange="changeMozaicResolution(this, 0)">
+								<input type="button" value=">" onclick="stepMozaicResolution(this, 0, 1)">
+							</div>
+							<div class="button-range-container" id="vertical-grid-resolution-control-block">
+								<input type="button" value="<" onclick="stepMozaicResolution(this, 1, -1)">
+								<input class="indicator-textbox" type="number" value="test" onchange="changeMozaicResolution(this, 1)">
+								<input type="button" value=">" onclick="stepMozaicResolution(this, 1, 1)">
+							</div>
+						</div>
+						<div class="button-range-container" id="horizontal-grid-resolution-control-block">
+							<input type="button" value="<" onclick="stepMozaicResolution(this, 0, -1)">
+							<input class="indicator-textbox" type="number" value="test" onchange="changeMozaicResolution(this, 0)">
+							<input type="button" value=">" onclick="stepMozaicResolution(this, 0, 1)">
+						</div>
+					</div>
+					
+					<div class="control-block">
+						<input class="slider" id="HUDTransparencyRange" type="range" oninput="sliderChanged(this, 1)" min="0" max="100">
+						<input class="slider" id="mozaicMinDotAngleRange" type="range" oninput="sliderChanged(this, 2)" min="0" max="100">
+						<input name="x-scale" type="number" step="0.0001">
+						<input name="y-scale" type="number" step="0.0001">
+					</div>
+						
+					<div class="control-block">
+						<div class="checkbox-container">
+							<label for="transparentHUDController">Transparent HUD</label>
+							<div class="control-container">
+								<input type="checkbox" onchange="transparentHUDChanged()" id="transparentHUDController">
+							</div>
+						</div>
+						
+						<div class="checkbox-container">
+							<label for="mozaicController">Mozaic</label>
+							<div class="control-container">
+								<input type="checkbox" onchange="mozaicChanged()" id="mozaicController">
+							</div>
+						</div>
+						
+						<div class="checkbox-container">
+							<label for="useMouseController">Use Mouse</label>
+							<div class="control-container">
+								<input type="checkbox" onchange="useMouseChanged()" id="useMouseController">
+							</div>
+						</div>
+					</div>
+					
+					<div class="control-block">
+						<div class="grid-container">
+							<div class="grid-item">
+								<input class="color-block" id="color-block-corner-TL" onchange="onColorPicked(this, 1)" type="color">
+							</div>
+							<div class="grid-item">
+								<input class="color-block" id="color-block-corner-TR" onchange="onColorPicked(this, 2)" type="color">
+							</div>
+							<div class="grid-item">
+								<input class="color-block" id="color-block-corner-BL" onchange="onColorPicked(this, 3)" type="color">
+							</div>
+							<div class="grid-item">
+								<input class="color-block" id="color-block-corner-BR" onchange="onColorPicked(this, 4)" type="color">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<!-- load da game -->
+	<script type="text/javascript" src="external/gl-matrix-min.js"></script>
+	<script type="text/javascript" src="external/math.min.js"></script>
+	
+	<script type="text/javascript" src="src/program_settings.js"></script>
+	<script type="text/javascript" src="src/game.js"></script>
+</html>
