@@ -136,6 +136,7 @@ function onColorPicked(caller, id) {
 
 function mozaicChanged() {
 	mozaicEnabled = document.getElementById("mozaicController").checked;
+	updateBufferData();
 }
 
 function useMouseChanged() {

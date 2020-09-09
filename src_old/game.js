@@ -26,6 +26,12 @@ var buffers = null;
 
 // buffer data
 var v_vertices = null;
+var v_screenvertices = [-1.0, 1.0, 0.0,
+						 -1.0, -1.0, 0.0,
+						 1.0, 1.0, 0.0,
+						 -1.0, -1.0, 0.0,
+						 1.0, -1.0, 0.0,
+						 1.0, 1.0, 0.0];
 var f_normals = null; // 3 per face (flat shading)
 
 // render and game variables
@@ -43,7 +49,7 @@ var HUDBackgroundColor = [0.2, 0.2, 0.2];
 var HUDTransparency = 0.2;
 var transparentHUD = false;
 var useMouseEnabled = false;
-var mozaicEnabled = true;
+var mozaicEnabled = false;
 var mozaicMinDotAngle = 0.9985;
 var mozaicMinDotAngleControlMin = 0.95;
 var mozaicMinDotAngleControlMax = 0.9999;
@@ -106,8 +112,8 @@ function updateMousePosNDC() {
 	mousePosNDC = [mousePosNDCX, mousePosNDCY];
 }
 
-function update(delta) {
-	timeColor += delta;
+function update(deltaTime) {
+	timeColor += deltaTime;
 	if (timeColor >= 2000) {
 		timeColor -= 2000;
 	}
@@ -168,7 +174,13 @@ function render(delta) {
 
 	// draw
 	{
-		const vertexCount = gridX * gridY * 12;
+		// const vertexCount = gridX * gridY * 12;
+		var vertexCount;
+		if (mozaicEnabled) {
+			vertexCount = v_vertices.length / 3;	
+		} else {
+			vertexCount = 6;
+		}
 		gl.drawArrays(gl.TRIANGLES, 0, vertexCount);
 	}
 }
@@ -292,9 +304,16 @@ function updateMozaicData() {
 
 function updateBufferData() {
 	gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-	gl.bufferData(gl.ARRAY_BUFFER,
-					new Float32Array(v_vertices),
-					gl.STATIC_DRAW);
+	if (mozaicEnabled) {
+		gl.bufferData(gl.ARRAY_BUFFER,
+						new Float32Array(v_vertices),
+						gl.STATIC_DRAW);		
+	} else {
+		gl.bufferData(gl.ARRAY_BUFFER,
+						new Float32Array(v_screenvertices),
+						gl.STATIC_DRAW);
+	}
+
 	gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normals);
 	gl.bufferData(gl.ARRAY_BUFFER,
 					new Float32Array(f_normals),
